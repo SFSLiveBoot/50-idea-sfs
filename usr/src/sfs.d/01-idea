@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+test -n "$IDEA_TGZ" || {
+  echo "Please download IntelliJ from https://www.jetbrains.com/idea/download/ and set IDEA_TGZ env to downloaded .tgz" >&2
+  exit 1
+}
+
+mkdir -p "$DESTDIR/opt"
+tar xfz "$IDEA_TGZ" -C "$DESTDIR/opt"
+
+idea_path=$(tar tfz "$IDEA_TGZ" | grep --line-buffered -xvF . | head -1 | cut -f1 -d/)
+ln -s "$idea_path" "$DESTDIR/opt/idea"
